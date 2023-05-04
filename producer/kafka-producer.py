@@ -1,8 +1,6 @@
 '''Kafka Producer'''
 
-import json
 import random
-import time
 from json import dumps
 
 from kafka import KafkaProducer
@@ -12,9 +10,7 @@ producer = KafkaProducer(bootstrap_servers=['kafka_0:9092', 'kafka_1:9093', 'kaf
                          value_serializer=lambda x:
                          dumps(x).encode('utf-8'))
 
-i = 0
-for i in range(10):
-    i += 1
+for _ in range(10):
     message = random.choice([{"type": "message"}, {"type": "error"}])
 
     print(message)

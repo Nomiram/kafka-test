@@ -1,9 +1,10 @@
 '''Kafka Consumer'''
+
 import json
 
 from kafka import KafkaConsumer, KafkaProducer
 
-MAX_RETRY = 5
+
 producer = KafkaProducer(bootstrap_servers=['kafka_0:9092', 'kafka_1:9093', 'kafka_2:9094',],
                          value_serializer=lambda x:
                          json.dumps(x).encode('utf-8'))
@@ -16,7 +17,7 @@ consumer = KafkaConsumer(
 print("starting the consumer")
 for msg in consumer:
     try:
-        print(msg)
+        # print(msg)
         print(msg.value)
         if msg.value.decode() != json.dumps({"type": "message"}):
             ack = producer.send(
@@ -25,7 +26,7 @@ for msg in consumer:
             print(
                 f"Send: '{metadata.topic}' partition: {metadata.partition} offset: {metadata.offset}")
             producer.flush()
-        else:
-            print("Done")
+            continue
+        print("Done!")
     except Exception as e:
         print(e)
